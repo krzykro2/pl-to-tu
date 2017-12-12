@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
+    <link rel="stylesheet" href="//cdn.rawgit.com/necolas/normalize.css/master/normalize.css">
+    <link rel="stylesheet" href="//cdn.rawgit.com/milligram/milligram/master/dist/milligram.min.css">
+    <title>Polish to Turkish orthography</title>
+    <script type="text/javascript">
+    function doThings() {
+      var val = document.getElementById("textarea").value;
+      var request = new XMLHttpRequest();
+      request.open('POST', '/transform', true);
+      request.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+      request.onreadystatechange = function() {
+        if (request.readyState == XMLHttpRequest.DONE && request.status == 200) {
+          document.getElementById("result").innerHTML =
+            JSON.parse(request.responseText).payload.split('\n').join('<br />');
+        }
+      };
+      request.send(JSON.stringify({'payload': val}));
+      return false;
+    }
+    </script>
+  </head>
+  <body>
+    <h1>Transform ortography</h1>
+    <form>
+      <fieldset>
+        <div class="container">
+          <div class="row">
+            <div class="column column-50">
+              <label for="textarea">Text in Polish</label>
+              <textarea
+              placeholder="Litwo, ojczyzno moja, Ty jesteś jak zdrowie!"
+              style="width:100%; height:400px;"
+              id="textarea"></textarea>
+            </div>
+            <div class="column column-50">
+              <div
+                style="width:100%; height:400px;">
+                <p id="result" style="font-family: Helvetica;"></p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <input class="button-primary" onclick="doThings()" type="button" value="Send">
+      </fieldset>
+    </form>
+  </body>
+</html>
